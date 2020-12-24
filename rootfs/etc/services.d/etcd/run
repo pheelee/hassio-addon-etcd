@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bashio
+
+LOGLEVEL=$(bashio::config 'loglevel')
+
+apkArch="$(apk --print-arch)"; \
+case "$apkArch" in \
+        armhf) export ETCD_UNSUPPORTED_ARCH='armv6' ;; \
+        armv7) export ETCD_UNSUPPORTED_ARCH='armv7' ;; \
+        aarch64) export ETCD_UNSUPPORTED_ARCH='arm64' ;; \
+        x86_64)  ;; \
+        *) echo >&2 "error: unsupported architecture: $apkArch"; exit 1 ;; \
+esac;
+
+etcd --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --enable-v2 --log-level=$LOGLEVEL

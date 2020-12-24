@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bashio
+
+/var/local/etcdkeeper/etcdkeeper -p 8099
